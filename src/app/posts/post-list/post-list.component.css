@@ -7,10 +7,10 @@ mat-spinner {
     margin: auto;
 }
 
-post-image {
+.post-image {
     width: 100%;
 }
 
-post-image img {
+.post-image img {
     width: 100%;
 }
