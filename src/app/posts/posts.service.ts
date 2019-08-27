@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class PostsService {
 
   private posts: Post[] = [];
-  private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
+  private postsUpdated = new Subject<{ posts: Post[], postCount: number }>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -26,6 +26,7 @@ export class PostsService {
               content: post.content,
               id: post._id,
               imagePath: post.imagePath,
+              creator: post.creator
             };
           }),
           maxPosts: postData.maxPosts
@@ -33,12 +34,16 @@ export class PostsService {
       }))
       .subscribe((transformedPosts) => {
         this.posts = transformedPosts.posts;
-        this.postsUpdated.next({posts: [...this.posts], postCount: transformedPosts.maxPosts});
+        this.postsUpdated.next({ posts: [...this.posts], postCount: transformedPosts.maxPosts });
       });
   }
 
   getPost(id: string) {
-    return this.http.get<{ _id: string, title: string, content: string, imagePath: string }>('http://localhost:4455/api/posts/' + id);
+    return this.http.get<{
+      _id: string, title: string,
+      content: string,
+      imagePath: string,
+      creator: string }>('http://localhost:4455/api/posts/' + id);
   }
 
   getPostUpdateListener() {
@@ -65,7 +70,7 @@ export class PostsService {
       postData.append('content', content);
       postData.append('image', image, title);
     } else {
-      postData = { id: id, title: title, content: content, imagePath: image };
+      postData = { id: id, title: title, content: content, imagePath: image, creator: null };
     }
     this.http.put('http://localhost:4455/api/posts/' + id, postData)
       .subscribe((response) => {

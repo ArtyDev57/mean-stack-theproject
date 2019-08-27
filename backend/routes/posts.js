@@ -34,7 +34,8 @@ router.post('', checkAuth, multer({storage: storage}).single('image'), (req, res
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    imagePath: url + '/images/' + req.file.filename
+    imagePath: url + '/images/' + req.file.filename,
+    creator: req.userdata.userId
   });
   post.save().then(createdPost => {
     res.status(201).json({
@@ -57,15 +58,22 @@ router.put('/:id', checkAuth, multer({storage: storage}).single('image'), (req, 
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
-    imagePath: imagePath
+    imagePath: imagePath,
+    creator: req.userdata.userId
   });
   Post.updateOne({
-    _id: req.params.id
+    _id: req.params.id,
+    creator: req.userdata.userId
   }, post).then((result) => {
-    console.log(result);
-    res.status(200).json({
-      message: "Updated Seccessfully"
-    });
+    if (result.nModified > 0) {
+      res.status(200).json({
+        message: "Updated Seccessfully",
+      });
+    } else {
+      res.status(401).json({
+        message: "Updated Failed",
+      });
+    }
   });
 });
 
@@ -108,12 +116,18 @@ router.get('/:id', (req, res, next) => {
 
 router.delete('/:id', checkAuth, (req, res, next) => {
   Post.deleteOne({
-    _id: req.params.id
+    _id: req.params.id,
+    creator: req.userdata.userId
   }).then((result) => {
-    res.status(200).json({
-      message: "Deleted Seccessfully"
-    });
-    console.log(result)
+    if (result.deleteCount > 0) {
+      res.status(200).json({
+        message: "Deleted Seccessfully"
+      });
+    } else {
+      res.status(401).json({
+        message: "Deleted Failed"
+      });
+    }
   });
 
 });
