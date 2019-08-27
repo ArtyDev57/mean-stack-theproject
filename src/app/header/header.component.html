@@ -6,8 +6,8 @@
     </span>
     <ul>
         <li *ngIf="isUserAuth"><a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a></li>
-        <li *ngIf="!isUserAuth"><a mat-button routerLink="/signup" routerLinkActive="mat-accent">Signup</a></li>
-        <li *ngIf="!isUserAuth"><a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a></li>
+        <li *ngIf="!isUserAuth"><a mat-button routerLink="/user/signup" routerLinkActive="mat-accent">Signup</a></li>
+        <li *ngIf="!isUserAuth"><a mat-button routerLink="/user/login" routerLinkActive="mat-accent">Login</a></li>
         <li *ngIf="isUserAuth"><button mat-button (click)="onLogout()">Logout</button></li>
     </ul>
 </mat-toolbar>

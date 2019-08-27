@@ -51,4 +51,5 @@ server.on("error", onError);
 server.on("listening", onListening);
 server.listen(port, () => {
   console.log('Running...');
+  console.log(process.env.JWT_KEY);
 });
