@@ -45,6 +45,10 @@ router.post('', checkAuth, multer({storage: storage}).single('image'), (req, res
         id: createdPost._id
       }
     });
+  }).catch(err => {
+    res.status(500).json({
+      message: 'Something Went Wrong, I Can Feel It (C)'
+    });
   });
 });
 
@@ -74,6 +78,10 @@ router.put('/:id', checkAuth, multer({storage: storage}).single('image'), (req, 
         message: "Updated Failed",
       });
     }
+  }).catch(err => {
+    res.status(500).json({
+      message: 'Something Went Wrong, I Can Feel It (U)'
+    });
   });
 });
 
@@ -97,7 +105,9 @@ router.get('', (req, res, next) => {
     });
   })
   .catch(() => {
-    console.log("Error");
+    res.status(500).json({
+      message: 'Something Went Wrong, I Can Feel It (R)'
+    });
   });
 
 });
@@ -111,6 +121,10 @@ router.get('/:id', (req, res, next) => {
         message: "Not Found"
       })
     }
+  }).catch(err => {
+    res.status(500).json({
+      message: 'Something Went Wrong, I Can Feel It (R)'
+    });
   });
 });
 
@@ -128,6 +142,10 @@ router.delete('/:id', checkAuth, (req, res, next) => {
         message: "Deleted Failed"
       });
     }
+  }).catch(err => {
+    res.status(500).json({
+      message: 'Something Went Wrong, I Can Feel It (D)'
+    });
   });
 
 });
